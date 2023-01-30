@@ -15,7 +15,7 @@ function Header() {
       <nav
         className={css`
           height: 100%;
-          max-width: 1200px;
+          max-width: 1000px;
           margin: 0 auto;
         `}
       >
@@ -30,6 +30,7 @@ function Header() {
             to="/"
             className={({ isActive }) => css`
               font-size: 15px;
+              font-weight: ${isActive ? 700 : 400};
               color: ${isActive ? colors.black : colors.gray700};
             `}
           >
@@ -39,10 +40,11 @@ function Header() {
             to="/repositories"
             className={({ isActive }) => css`
               font-size: 15px;
+              font-weight: ${isActive ? 700 : 400};
               color: ${isActive ? colors.black : colors.gray700};
             `}
           >
-            저장한 레포지토리
+            저장한 Repository
           </NavLink>
         </Stack>
       </nav>
