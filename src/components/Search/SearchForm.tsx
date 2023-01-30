@@ -6,9 +6,11 @@ import { css } from '@emotion/css';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import useNavigationStatus from 'hooks/useNavigationStatus';
 import colors from 'colors';
 
 function SearchForm() {
+  const { isLoading } = useNavigationStatus();
   const [term, setTerm] = useState('');
 
   const handleTerm: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -39,6 +41,7 @@ function SearchForm() {
           />
           <Button
             type="submit"
+            isLoading={isLoading}
             className={css`
               width: 80px;
             `}
