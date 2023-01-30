@@ -4,9 +4,8 @@ import { Await, Link, useLoaderData, useSearchParams } from 'react-router-dom';
 import { Endpoints } from '@octokit/types';
 import { css } from '@emotion/css';
 
+import { SearchedList, SearchForm, SearchSkeleton } from 'components/Search';
 import Button from 'components/Button';
-import SearchedList from 'components/Search/SearchedList';
-import SearchForm from 'components/Search/SearchForm';
 
 import { loader } from './options';
 import colors from 'colors';
@@ -84,7 +83,7 @@ function Search() {
         Repository 검색
       </h1>
       <SearchForm />
-      <Suspense fallback={<div>Loading ...</div>}>
+      <Suspense fallback={<SearchSkeleton />}>
         <Await resolve={repositories}>
           <SearchedList />
           <Stack gap={16} align="center" justify="center">
