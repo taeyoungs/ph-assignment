@@ -8,7 +8,7 @@ import Repositories from 'routes/Repositories';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route index element={<Search />} />
+      <Route index element={<Search />} loader={Search.loader} />
       <Route path="repositories" element={<Repositories />} />
     </Route>
   )
