@@ -7,7 +7,7 @@ const PER_PAGE = 10;
 function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get('q');
-  const page = url.searchParams.get('page') ?? 1;
+  const page = url.searchParams.get('p') ?? 1;
 
   if (!searchTerm) {
     return defer({
