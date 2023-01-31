@@ -73,7 +73,7 @@ function SearchedItem({ repository, isEnrolled, enrolledRepositories, updateEnro
           >
             <Text>☆ {stargazers_count}</Text>
             <Text>{language}</Text>
-            <Text>Updated on {updated_at}</Text>
+            <Text>Updated on {getFormattedDate(updated_at)}</Text>
           </Stack>
         </Stack>
         <Button
@@ -90,6 +90,13 @@ function SearchedItem({ repository, isEnrolled, enrolledRepositories, updateEnro
       </Flex>
     </li>
   );
+}
+
+const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+function getFormattedDate(date: string) {
+  const d = new Date(date);
+
+  return `${DAYS_OF_WEEK[d.getDay()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
 export default SearchedItem;
