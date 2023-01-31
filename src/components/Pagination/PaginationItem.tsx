@@ -1,6 +1,7 @@
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { css } from '@emotion/css';
 
+import { getNewPageParams } from 'utils';
 import colors from 'colors';
 
 interface PaginationItemProps {
@@ -36,16 +37,6 @@ function PaginationItem({ page, current }: PaginationItemProps) {
       {page}
     </Link>
   );
-}
-
-function getNewPageParams(searchParams: URLSearchParams, page: number) {
-  if (!searchParams.has('p')) {
-    return searchParams.toString() + `&p=${page}`;
-  }
-
-  return Array.from(searchParams.entries())
-    .map(([key, value]) => (key === 'p' ? `p=${page}` : `${key}=${value}`))
-    .join('&');
 }
 
 export default PaginationItem;
