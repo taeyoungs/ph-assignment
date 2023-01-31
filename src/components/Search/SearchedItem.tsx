@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { Flex, Stack, Text } from 'quantumic-design';
 import { Endpoints } from '@octokit/types';
 import { css } from '@emotion/css';
 
 import Button from 'components/Button';
-import { LOCAL_STORAGE_KEY } from 'constant';
 import colors from 'colors';
 
 type Repository = Endpoints['GET /search/repositories']['response']['data']['items'][0];
@@ -12,35 +10,26 @@ type Repository = Endpoints['GET /search/repositories']['response']['data']['ite
 interface SearchedItemProps {
   repository: Repository;
   isEnrolled?: boolean;
+  enrolledRepositories: Repository[];
+  updateEnrolledRepositories: (repositories: Repository[]) => void;
 }
 
-function SearchedItem({ repository, isEnrolled: initialIsEnrolled = false }: SearchedItemProps) {
+function SearchedItem({ repository, isEnrolled, enrolledRepositories, updateEnrolledRepositories }: SearchedItemProps) {
   const { full_name, stargazers_count, language, updated_at, description, html_url, id } = repository;
-  const [isEnrolled, setIsEnrolled] = useState(initialIsEnrolled);
 
   const handleEnrollRepository: React.MouseEventHandler<HTMLButtonElement> = () => {
-    const enrolledRepositories = JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]'
-    ) as Repository[];
-
     if (enrolledRepositories.length === 4) {
-      alert('등록할 수 있는 레포지토리의 최대 개수는 4개입니다.');
+      alert('등록할 수 있는 Repository의 최대 개수는 4개입니다.');
       return;
     }
 
-    setIsEnrolled(true);
     const newEnrolledRepositories = [...enrolledRepositories, repository];
-    localStorage.setItem(LOCAL_STORAGE_KEY.REPOSITORIES, JSON.stringify(newEnrolledRepositories));
+    updateEnrolledRepositories(newEnrolledRepositories);
   };
 
   const handleDeleteRepository: React.MouseEventHandler<HTMLButtonElement> = () => {
-    const enrolledRepositories = JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]'
-    ) as Repository[];
-
-    setIsEnrolled(false);
     const newEnrolledRepositories = enrolledRepositories.filter((repo) => repo.id !== id);
-    localStorage.setItem(LOCAL_STORAGE_KEY.REPOSITORIES, JSON.stringify(newEnrolledRepositories));
+    updateEnrolledRepositories(newEnrolledRepositories);
   };
 
   return (

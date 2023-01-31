@@ -6,6 +6,7 @@ import { css } from '@emotion/css';
 import Pagination from 'components/Pagination';
 import SearchedItem from './SearchedItem';
 
+import { usePersistedState } from 'hooks/usePersistedState';
 import { LOCAL_STORAGE_KEY } from 'constant';
 import colors from 'colors';
 
@@ -16,7 +17,15 @@ function SearchedList() {
   const {
     data: { items: repositories, total_count },
   } = useAsyncValue() as SearchRepositoriesResponse;
-  const enrolledRepositoryIds = getEnrolledRepositoryIds();
+  const [enrolledRepositories, setEnrolledRepositories] = usePersistedState<Repositories>(
+    [],
+    LOCAL_STORAGE_KEY.REPOSITORIES
+  );
+  const enrolledRepositoryIds = enrolledRepositories.map((repo) => repo.id);
+
+  const updateEnrolledRepositories = (repos: Repositories) => {
+    setEnrolledRepositories(repos);
+  };
 
   return (
     <Fragment>
@@ -43,6 +52,8 @@ function SearchedList() {
             <SearchedItem
               key={repository.id}
               repository={repository}
+              enrolledRepositories={enrolledRepositories}
+              updateEnrolledRepositories={updateEnrolledRepositories}
               isEnrolled={enrolledRepositoryIds.includes(repository.id)}
             />
           ))}
@@ -53,10 +64,10 @@ function SearchedList() {
   );
 }
 
-function getEnrolledRepositoryIds() {
-  const enrolledRepositories = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]') as Repositories;
+// function getEnrolledRepositoryIds() {
+//   const enrolledRepositories = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]') as Repositories;
 
-  return enrolledRepositories.map((repo) => repo.id);
-}
+//   return enrolledRepositories.map((repo) => repo.id);
+// }
 
 export default SearchedList;
