@@ -17,8 +17,8 @@
 - [x] Search Skeleton
 - [x] Search Pagination
   - [x] Pagination 컴포넌트 구현
-  - [ ] Pagination 컴포넌트 리팩토링
-  - [ ] Pagination 버그 수정 (특정 갯수 이하일 경우)
+  - [x] Pagination 컴포넌트 리팩토링
+  - [x] Pagination 버그 수정 (특정 갯수 이하일 경우)
 - [x] 레포지토리 등록
   - [x] 최대 개수 시 알림
 - [x] Delete Repository
