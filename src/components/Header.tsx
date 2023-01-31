@@ -44,7 +44,7 @@ function Header() {
               color: ${isActive ? colors.black : colors.gray700};
             `}
           >
-            저장한 Repository
+            등록된 Repository
           </NavLink>
         </Stack>
       </nav>
