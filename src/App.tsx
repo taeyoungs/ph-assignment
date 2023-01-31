@@ -3,13 +3,13 @@ import { QDProvider } from 'quantumic-design';
 
 import Layout from 'routes/Layout';
 import Search from 'routes/Search';
-import Repositories from 'routes/Repositories';
+import EnrolledRepositories from 'routes/EnrolledRepositories';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Search />} loader={Search.loader} />
-      <Route path="repositories" element={<Repositories />} />
+      <Route path="repositories" element={<EnrolledRepositories />} />
     </Route>
   )
 );
