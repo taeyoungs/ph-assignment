@@ -14,10 +14,12 @@
 
 ## Todo
 
-- [ ] Search Skeleton
-- [ ] Search Pagination
-  - [ ] Pagination Component
-- [ ] Enroll Repository
-  - [ ] Alert
+- [x] Search Skeleton
+- [x] Search Pagination
+  - [x] Pagination 컴포넌트 구현
+  - [ ] Pagination 컴포넌트 리팩토링
+- [ ] 레포지토리 등록
+  - [ ] 최대 개수 시 알림
 - [ ] Delete Repository
+  - [ ] 이미 등록된 레포라면 등록 버튼이 삭제 버튼이 되도록
 - [ ] ...

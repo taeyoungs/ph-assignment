@@ -1,11 +1,10 @@
 import { Suspense } from 'react';
-import { Stack, Text } from 'quantumic-design';
-import { Await, Link, useLoaderData, useSearchParams } from 'react-router-dom';
+import { Text } from 'quantumic-design';
+import { Await, useLoaderData, useSearchParams } from 'react-router-dom';
 import { Endpoints } from '@octokit/types';
 import { css } from '@emotion/css';
 
 import { SearchedList, SearchForm, SearchSkeleton } from 'components/Search';
-import Button from 'components/Button';
 
 import { loader } from './options';
 import colors from 'colors';
@@ -86,15 +85,6 @@ function Search() {
       <Suspense fallback={<SearchSkeleton />}>
         <Await resolve={repositories}>
           <SearchedList />
-          <Stack gap={16} align="center" justify="center">
-            <Button>이전</Button>
-            <Stack gap={6}>
-              <Link to="#">1</Link>
-              <Link to="#">2</Link>
-              <Link to="#">3</Link>
-            </Stack>
-            <Button>다음</Button>
-          </Stack>
         </Await>
       </Suspense>
     </section>

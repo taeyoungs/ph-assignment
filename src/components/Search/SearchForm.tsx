@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form } from 'react-router-dom';
+import { Form, useSearchParams } from 'react-router-dom';
 import { Stack } from 'quantumic-design';
 import { css } from '@emotion/css';
 
@@ -11,7 +11,8 @@ import colors from 'colors';
 
 function SearchForm() {
   const { isLoading } = useNavigationStatus();
-  const [term, setTerm] = useState('');
+  const [searchParams] = useSearchParams();
+  const [term, setTerm] = useState(searchParams.get('q') ?? '');
 
   const handleTerm: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setTerm(e.target.value);
