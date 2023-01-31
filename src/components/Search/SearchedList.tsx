@@ -6,14 +6,17 @@ import { css } from '@emotion/css';
 import Pagination from 'components/Pagination';
 import SearchedItem from './SearchedItem';
 
+import { LOCAL_STORAGE_KEY } from 'constant';
 import colors from 'colors';
 
 type SearchRepositoriesResponse = Endpoints['GET /search/repositories']['response'];
+type Repositories = SearchRepositoriesResponse['data']['items'];
 
 function SearchedList() {
   const {
     data: { items: repositories, total_count },
   } = useAsyncValue() as SearchRepositoriesResponse;
+  const enrolledRepositoryIds = getEnrolledRepositoryIds();
 
   return (
     <Fragment>
@@ -37,13 +40,23 @@ function SearchedList() {
         </h2>
         <ul>
           {repositories.map((repository) => (
-            <SearchedItem key={repository.id} {...repository} />
+            <SearchedItem
+              key={repository.id}
+              repository={repository}
+              isEnrolled={enrolledRepositoryIds.includes(repository.id)}
+            />
           ))}
         </ul>
       </section>
       <Pagination totalCount={total_count} />
     </Fragment>
   );
+}
+
+function getEnrolledRepositoryIds() {
+  const enrolledRepositories = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]') as Repositories;
+
+  return enrolledRepositories.map((repo) => repo.id);
 }
 
 export default SearchedList;
