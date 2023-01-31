@@ -1,13 +1,48 @@
+import { useState } from 'react';
 import { Flex, Stack, Text } from 'quantumic-design';
-import { css } from '@emotion/css';
 import { Endpoints } from '@octokit/types';
+import { css } from '@emotion/css';
 
 import Button from 'components/Button';
+import { LOCAL_STORAGE_KEY } from 'constant';
 import colors from 'colors';
 
 type Repository = Endpoints['GET /search/repositories']['response']['data']['items'][0];
 
-function SearchedItem({ full_name, stargazers_count, language, updated_at, description, html_url }: Repository) {
+interface SearchedItemProps {
+  repository: Repository;
+  isEnrolled?: boolean;
+}
+
+function SearchedItem({ repository, isEnrolled: initialIsEnrolled = false }: SearchedItemProps) {
+  const { full_name, stargazers_count, language, updated_at, description, html_url, id } = repository;
+  const [isEnrolled, setIsEnrolled] = useState(initialIsEnrolled);
+
+  const handleEnrollRepository: React.MouseEventHandler<HTMLButtonElement> = () => {
+    const enrolledRepositories = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]'
+    ) as Repository[];
+
+    if (enrolledRepositories.length === 4) {
+      alert('등록할 수 있는 레포지토리의 최대 개수는 4개입니다.');
+      return;
+    }
+
+    setIsEnrolled(true);
+    const newEnrolledRepositories = [...enrolledRepositories, repository];
+    localStorage.setItem(LOCAL_STORAGE_KEY.REPOSITORIES, JSON.stringify(newEnrolledRepositories));
+  };
+
+  const handleDeleteRepository: React.MouseEventHandler<HTMLButtonElement> = () => {
+    const enrolledRepositories = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]'
+    ) as Repository[];
+
+    setIsEnrolled(false);
+    const newEnrolledRepositories = enrolledRepositories.filter((repo) => repo.id !== id);
+    localStorage.setItem(LOCAL_STORAGE_KEY.REPOSITORIES, JSON.stringify(newEnrolledRepositories));
+  };
+
   return (
     <li
       className={css`
@@ -29,7 +64,17 @@ function SearchedItem({ full_name, stargazers_count, language, updated_at, descr
           >
             {full_name}
           </a>
-          <Text size={13}>{description}</Text>
+          <Text
+            size={13}
+            className={css`
+              max-width: 800px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+            `}
+          >
+            {description}
+          </Text>
           <Stack
             gap={10}
             className={css`
@@ -44,11 +89,14 @@ function SearchedItem({ full_name, stargazers_count, language, updated_at, descr
         </Stack>
         <Button
           type="button"
+          onClick={isEnrolled ? handleDeleteRepository : handleEnrollRepository}
           className={css`
             width: 60px;
+            background-color: ${isEnrolled ? colors.red600 : colors.blue600};
+            border-color: ${isEnrolled ? colors.red600 : colors.blue600};
           `}
         >
-          등록
+          {isEnrolled ? '삭제' : '등록'}
         </Button>
       </Flex>
     </li>
