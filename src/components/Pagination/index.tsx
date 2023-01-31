@@ -2,9 +2,11 @@ import { useSearchParams } from 'react-router-dom';
 import { Stack } from 'quantumic-design';
 import { css } from '@emotion/css';
 
-import Button from 'components/Button';
 import PaginationItem from './PaginationItem';
 import usePagination from './usePagination';
+import Button from 'components/Button';
+
+import { getNewPageParams } from 'utils';
 
 const PER_PAGE = 10;
 const INITIAL_PAGE = 1;
@@ -14,13 +16,27 @@ interface PaginationProps {
 }
 
 function Pagination({ totalCount }: PaginationProps) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('p') ?? INITIAL_PAGE);
   const totalPages = Math.ceil(totalCount / PER_PAGE);
   const { items } = usePagination({ total: totalPages, page: currentPage });
 
   const hasPreviousPage = currentPage > INITIAL_PAGE;
   const hasNextPage = currentPage < totalPages;
+
+  const handlePreviousButton = () => {
+    const newParams = getNewPageParams(searchParams, currentPage - 1);
+
+    setSearchParams(newParams);
+    window.scrollTo(0, 0);
+  };
+
+  const handleNextButton = () => {
+    const newParams = getNewPageParams(searchParams, currentPage + 1);
+
+    setSearchParams(newParams);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <Stack
@@ -31,7 +47,9 @@ function Pagination({ totalCount }: PaginationProps) {
         margin: 0 0 24px;
       `}
     >
-      <Button isDisabled={!hasPreviousPage}>이전</Button>
+      <Button isDisabled={!hasPreviousPage} onClick={handlePreviousButton}>
+        이전
+      </Button>
       <Stack gap={10} align="center">
         {items.map((item) =>
           item === 'front-ellipsis' || item === 'back-ellipsis' ? (
@@ -41,7 +59,9 @@ function Pagination({ totalCount }: PaginationProps) {
           )
         )}
       </Stack>
-      <Button isDisabled={!hasNextPage}>다음</Button>
+      <Button isDisabled={!hasNextPage} onClick={handleNextButton}>
+        다음
+      </Button>
     </Stack>
   );
 }
