@@ -64,10 +64,4 @@ function SearchedList() {
   );
 }
 
-// function getEnrolledRepositoryIds() {
-//   const enrolledRepositories = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.REPOSITORIES) ?? '[]') as Repositories;
-
-//   return enrolledRepositories.map((repo) => repo.id);
-// }
-
 export default SearchedList;
