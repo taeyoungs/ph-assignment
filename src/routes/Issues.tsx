@@ -1,9 +1,29 @@
+import { useState } from 'react';
 import { Stack, Text } from 'quantumic-design';
+import { Endpoints } from '@octokit/types';
 import { css } from '@emotion/css';
 
+import Tab from 'components/Issues/Tab';
+
+import { usePersistedState } from 'hooks/usePersistedState';
+import { LOCAL_STORAGE_KEY } from 'constant';
 import colors from 'colors';
 
+type Repositories = Endpoints['GET /search/repositories']['response']['data']['items'];
+type Repository = Endpoints['GET /search/repositories']['response']['data']['items'][0];
+
 function Issues() {
+  const [enrolledRepositories] = usePersistedState<Repositories>([], LOCAL_STORAGE_KEY.REPOSITORIES);
+  const [selectedRepository, setSelectedRepository] = useState(enrolledRepositories[0] ?? null);
+
+  const updateSelectedRepository = (repo: Repository) => {
+    setSelectedRepository(repo);
+  };
+
+  if (!selectedRepository) {
+    return null;
+  }
+
   return (
     <section
       className={css`
@@ -21,61 +41,14 @@ function Issues() {
       >
         Issues
       </h1>
-      <Stack as="ul" gap={25} justify="space-between">
-        <li
-          className={css`
-            background-color: ${colors.white};
-            width: 200px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            box-shadow: 0px -4px 7px rgba(0, 0, 0, 0.03);
-            padding: 10px;
-            text-align: center;
-          `}
-        >
-          <Text size={14}>Apple</Text>
-        </li>
-        <li
-          className={css`
-            background-color: ${colors.blue600};
-            width: 200px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            box-shadow: 0px -4px 7px rgba(0, 0, 0, 0.03);
-            padding: 10px;
-            text-align: center;
-          `}
-        >
-          <Text size={14} color={colors.white} weight={500}>
-            Selected Apple
-          </Text>
-        </li>
-        <li
-          className={css`
-            background-color: ${colors.white};
-            width: 200px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            box-shadow: 0px -4px 7px rgba(0, 0, 0, 0.03);
-            padding: 10px;
-            text-align: center;
-          `}
-        >
-          <Text size={14}>Apple</Text>
-        </li>
-        <li
-          className={css`
-            background-color: ${colors.white};
-            width: 200px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            box-shadow: 0px -4px 7px rgba(0, 0, 0, 0.03);
-            padding: 10px;
-            text-align: center;
-          `}
-        >
-          <Text size={14}>Apple</Text>
-        </li>
+      <Stack as="ul" gap={25}>
+        {enrolledRepositories.map((repo) => (
+          <Tab
+            repository={repo}
+            selectedRepository={selectedRepository}
+            updateSelectedRepository={updateSelectedRepository}
+          />
+        ))}
       </Stack>
       <section
         className={css`
