@@ -46,6 +46,16 @@ function Header() {
           >
             등록된 Repository
           </NavLink>
+          <NavLink
+            to="/issues"
+            className={({ isActive }) => css`
+              font-size: 15px;
+              font-weight: ${isActive ? 700 : 400};
+              color: ${isActive ? colors.black : colors.gray700};
+            `}
+          >
+            Issue 모음
+          </NavLink>
         </Stack>
       </nav>
     </header>

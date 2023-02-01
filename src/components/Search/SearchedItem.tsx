@@ -3,6 +3,8 @@ import { Endpoints } from '@octokit/types';
 import { css } from '@emotion/css';
 
 import Button from 'components/Button';
+
+import { getFormattedDate } from 'utils';
 import colors from 'colors';
 
 type Repository = Endpoints['GET /search/repositories']['response']['data']['items'][0];
@@ -90,13 +92,6 @@ function SearchedItem({ repository, isEnrolled, enrolledRepositories, updateEnro
       </Flex>
     </li>
   );
-}
-
-const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-function getFormattedDate(date: string) {
-  const d = new Date(date);
-
-  return `${DAYS_OF_WEEK[d.getDay()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
 
 export default SearchedItem;

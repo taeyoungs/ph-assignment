@@ -8,4 +8,11 @@ function getNewPageParams(searchParams: URLSearchParams, page: number) {
     .join('&');
 }
 
-export { getNewPageParams };
+const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+function getFormattedDate(date: string) {
+  const d = new Date(date);
+
+  return `${DAYS_OF_WEEK[d.getDay()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+export { getNewPageParams, getFormattedDate };
