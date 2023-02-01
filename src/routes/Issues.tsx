@@ -4,9 +4,7 @@ import { Stack } from 'quantumic-design';
 import { Endpoints } from '@octokit/types';
 import { css } from '@emotion/css';
 
-import IssueList from 'components/Issues/IssueList';
-import IssueSkeleton from 'components/Issues/IssueSkeleton';
-import Tab from 'components/Issues/Tab';
+import { IssueList, IssueSkeleton, Tab } from 'components/Issues';
 
 import { usePersistedState } from 'hooks/usePersistedState';
 import { LOCAL_STORAGE_KEY } from 'constant';
